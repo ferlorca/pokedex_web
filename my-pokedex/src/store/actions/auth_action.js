@@ -1,7 +1,6 @@
-import config,{firebaseAuth} from "../../config/config";
-import * as actionTypes from './../action_types';
+import config from "../../config/config";
+import * as actionTypes from '../action_types';
 import {handleError} from "./common_action";
-import {getProfileUser} from "./user_action";
 
 const axios = config.AXIOS;
 
@@ -12,45 +11,33 @@ export const authStart = () => {
     };
 };
 
-export async function authSuccess(user){
-    //o inicie o cree el usuario
-    try {
-        let token= await user.getIdToken();
-        let data = {
-            name: user.displayName,
-            email: user.email,
-            id: user.uid
-        }      
-
-        return dispatch => {           
-            localStorage.token = token;
-            dispatch(authGetRole());
-            dispatch(getProfileUser(data));
-            dispatch({
-                type: actionTypes.AUTH_SUCCESS,
-                isAuthenticate : user ? true : false,
-                idToken: token,    
-            });
+export async function authSuccess(data){       
+        return (dispatch,getState)=> {  
+            try { 
+                let authstate =  getState().auth;
+                dispatch({
+                    type: actionTypes.AUTH_SUCCESS,
+                    payload: {
+                        token: data.token ,
+                        role: data.role ?? authstate.role,
+                        email: data.email ?? authstate.email             
+                    }
+                });
+            } catch (err) {
+                handleError(err,actionTypes.AUTH_FAIL)
+            }  
         }        
-    } catch (err) {
-        handleError(err,actionTypes.AUTH_FAIL)
-    }  
+   
 };
 
 export const logout =  () => {
-    return async dispatch => {
+    return dispatch => {
         try{
-            localStorage.removeItem('token');
-            await firebaseAuth.signOut()        
+            localStorage.removeItem('token');    
+            localStorage.removeItem('expirationDate');
             dispatch({
                 type: actionTypes.AUTH_LOGOUT
-            });
-            dispatch({
-                type: actionTypes.MEAL_RESET
-            });
-            dispatch({
-                type: actionTypes.USER_RESET
-            });
+            });            
         }
         catch(err) {
             dispatch(handleError(err,actionTypes.AUTH_FAIL));
@@ -61,55 +48,55 @@ export const logout =  () => {
 export const auth = (email, password, isSignup) => {
     return dispatch => {
         dispatch(authStart());
-        if (!isSignup) {
-            firebaseAuth.createUserWithEmailAndPassword(email,password).catch(function(err) {          
-                dispatch(handleError(err,actionTypes.AUTH_FAIL));            
-            });
-        }else
-            firebaseAuth.signInWithEmailAndPassword(email,password).catch(function(err) {          
-                dispatch(handleError(err,actionTypes.AUTH_FAIL));            
-            });
-        
+        let route ="signin";
+        if (isSignup) {
+            route= "signup"
+        }
+        axios.post(`/${route}`,{email,password})
+        .then((response) => {       
+            const expirationDate = new Date(new Date().getTime() + response.data.expiresIn * 1000);
+            localStorage.setItem('token', response.data.token);
+            localStorage.setItem('expirationDate', expirationDate);
+            dispatch(authSuccess(response.data));
+            dispatch(checkAuthTimeout(response.data.expiresIn));               
+        }).catch((err) => {
+            dispatch(handleError(err,actionTypes.AUTH_FAIL));
+        })
     };
 };
 
-export const listAllRoles = () =>{
+
+export const checkAuthTimeout = (expirationTime) => {
     return dispatch => {
-        axios.get("/auth/roles")
-        .then(response => {
-            dispatch({
-                type: actionTypes.AUTH_ALL_ROLES,
-                payload: response.data.roles
-            });
-        })
-        .catch(err => {
-            dispatch(handleError(err,actionTypes.AUTH_FAIL));
-        });
+        setTimeout(() => {
+            dispatch(logout());
+        }, expirationTime * 1000);
     };
-}
+};
+
 
 export const setAuthRedirectPath = (path) => {
     return {
         type: actionTypes.SET_AUTH_REDIRECT_PATH,
-        path: path
+        payload: path
     };
 };
 
-export const authGetRole = () => {
-    return (dispatch) => {
-        axios.get("/role")
-        .then(response => {
-            dispatch(authRoleSuccess(response.data.role));
-        })
-        .catch((err) => {
-            handleError(err,actionTypes.AUTH_FAIL)
-        });
-    };
-}
 
-const authRoleSuccess = (role)=>{
-    return {
-        type: actionTypes.AUTH_GET_ROLE,
-        payload: role,
-    }; 
-}
+export const authCheckState = () => {
+    return dispatch => {
+        dispatch(authStart());
+        const token = localStorage.getItem('token');
+        if (!token) {
+            dispatch(logout());
+        } else {
+            const expirationDate = new Date(localStorage.getItem('expirationDate'));
+            if (expirationDate <= new Date()) {
+                dispatch(logout());
+            } else {
+                dispatch(authSuccess({token}));
+                dispatch(checkAuthTimeout((expirationDate.getTime() - new Date().getTime()) / 1000 ));
+            }   
+        }
+    };
+};

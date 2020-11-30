@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter, Route } from "react-router-dom";
-// import Routes from './routes';
+import Routes from './routes';
 
 export const RouterContext = React.createContext({});
 
@@ -10,7 +10,7 @@ function CustomBrowserRouter() {
 			<Route>
 				{(routeProps) => (
 					<RouterContext.Provider value={routeProps}>
-						{/* <Routes/> */}
+						<Routes/>
 					</RouterContext.Provider>
 				)}
 			</Route>

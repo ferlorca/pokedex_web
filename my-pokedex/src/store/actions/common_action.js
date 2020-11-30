@@ -1,4 +1,4 @@
-import Notification ,{SEVERITY_NOTIFICACION,TYPE_NOTIFICACION} from "models/Notification";
+import Notification ,{SEVERITY_NOTIFICACION} from "../../models/Notification";
 import {addNotification} from "./notification_action";
 
 export const handleError = (err, type) => {
@@ -17,7 +17,6 @@ export const handleError = (err, type) => {
       Description: error.message,
       Title:error.code,
       Severity:SEVERITY_NOTIFICACION.WARNING,
-      Type:TYPE_NOTIFICACION.ALERT,
       Timeout:5000
     });
     dispatch(addNotification(notification))

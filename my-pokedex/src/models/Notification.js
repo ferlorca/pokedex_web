@@ -1,8 +1,3 @@
-export const TYPE_NOTIFICACION = {
-    ALERT: "ALERT",
-    DIALOG: "DIALOG"
-}
-
 export const SEVERITY_NOTIFICACION = {
     DEFAULT: "default",
     INFO: "info",
@@ -17,7 +12,6 @@ export default class Notification {
         this.Id = null;
         this.Title = "";
         this.Severity = "";
-        this.Type = "";
         this.Timeout = null;
     }
 
@@ -33,7 +27,6 @@ export default class Notification {
         newNotif.Id = Id ? Id : "";
         newNotif.Title = Title ? Title : "";
         newNotif.Severity = Severity ? Severity : SEVERITY_NOTIFICACION.WARNING;
-        newNotif.Type = Type ? Type : TYPE_NOTIFICACION.ALERT;
         newNotif.Timeout = Timeout ? Timeout : null;
         return newNotif;
     }
@@ -42,7 +35,6 @@ export default class Notification {
         var newNotif = new Notification();
         newNotif.Description = Description ? Description : "";
         newNotif.Severity = SEVERITY_NOTIFICACION.WARNING;
-        newNotif.Type = TYPE_NOTIFICACION.ALERT;
         newNotif.Timeout = 4000;
         return newNotif;
     }

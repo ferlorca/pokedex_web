@@ -1,4 +1,8 @@
-import { typesElements } from "./../widget/formField";
+import { typesElements } from "./../components/formField";
+
+const apiKey = process.env.REACT_APP_GOOGLE_TRANSLATE_API_KEY;
+export const googleTranslate = require("google-translate")(apiKey);
+
 
 const validate = (element, formData) => {
   let err = [true, ''];
@@ -43,6 +47,7 @@ export const updateFormData = (element, formData) => {
   const newElement = {
     ...newFormData[element.id]
   }
+  
   getValueInput(element,newElement);
   
   if (element.blur) {
