@@ -3,6 +3,7 @@ import {useSelector,useDispatch} from "react-redux"
 import useRouter from '../hook/useRouter';
 import { authCheckState } from "./../store/actions/auth_action";
 import { addLanguages } from "./../store/actions/translation_action";
+import { getTypes } from "./../store/actions/pokemon_action";
 // import {getAllPokemons} from "./../store/actions/pokedex_action"
 
 function Initializer({children}) {
@@ -11,7 +12,7 @@ function Initializer({children}) {
     const isAuthenticate = useSelector(state => state.auth.isAuthenticate);
     const authRedirectPath = useSelector(state => state.auth.authRedirectPath);
     const languages  = useSelector(state => state.translation.languageCodes)  
-
+    const types  = useSelector(state => state.pokemon.types)
     // const pokemons  = useSelector(state => state.pokemons.pokemons)  
 
     useEffect(() => {
@@ -31,6 +32,10 @@ function Initializer({children}) {
             dispatch(addLanguages())  
     }, [dispatch, languages])
 
+    useEffect(() => {
+        if(!types || types.length === 0 )
+            dispatch(getTypes())  
+    }, [dispatch, types])
 
     // useEffect(() => {
     //     if(!products || products.length === 0 )
