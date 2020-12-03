@@ -26,16 +26,20 @@ export default function PokemonList() {
             <TableCell align="right">{trasnlations.pokemon.actions}</TableCell>
           </TableRow>
         </TableHead>
-        <TableBody>
-          {loading ? 
-            <Grid justify="center" alignItems ="center">
-                <Loading/>
-            </Grid>          
-            :
-              pokemons.map((row) => (
+        <TableBody>          
+             {pokemons.length> 0 ?  pokemons.map((row) => (
                 <Row key={row.id} row={row} />
-              ))
-          }
+              )) : null}
+
+        {loading ? 
+              <Grid container
+              direction="row"
+              justify="center"
+              alignItems="center"
+              >                       
+                  <Loading/>   
+              </Grid>        
+            : null}
         </TableBody>
       </Table>
     </TableContainer>

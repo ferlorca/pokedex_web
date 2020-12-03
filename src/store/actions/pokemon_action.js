@@ -47,15 +47,23 @@ export const verifyTranslationPokemonName = (language) => {
 
 export const addFilter = (filter) => {
     return dispatch => {
+        filter.page = 1;
         dispatch(startPokemons()); 
+        dispatch(getAllPokemons(filter,types.POKEMON_GET_ALL,types.POKEMON_FAIL));
+    };     
+};
+
+
+export const getAllPokemons = (filter, typeOk, typeFail)=> {
+    return dispatch => {
         axios.post(`${route}/all`,{filter})
         .then((response) => {                  
             dispatch({
-                type:types.POKEMON_GET_ALL,
+                type:typeOk,
                 payload: response.data
             });          
         }).catch((err) => {
-            dispatch(handleError(err,types.POKEMON_FAIL));
+            dispatch(handleError(err,typeFail));
         })
     };     
 };
@@ -80,17 +88,8 @@ export const getBase = (id) => {
 
 export const nextPage = (filter) => {
     return dispatch => {
-        filter.page ++;
-        dispatch(startPokemons());      
-        axios.post(`${route}/all`,{filter})
-        .then((response) => {                  
-            dispatch({
-                type:types.POKEMON_GET_ALL,
-                payload: response.data
-            });          
-        }).catch((err) => {
-            dispatch(handleError(err,types.POKEMON_FAIL));
-        })
+        dispatch(startPokemons()); 
+        dispatch(getAllPokemons(filter,types.POKEMON_NEXT_PAGE,types.POKEMON_FAIL));
     };     
 };
 

@@ -17,9 +17,7 @@ const authStart = ( state, action ) => {
 
 const authSuccess = (state, action) => {
     return updateObject( state, { 
-        token: action.payload.token,
-        role: action.payload.role,
-        email:action.payload.email,
+        token: action.payload.token,        
         isAuthenticate: true,              
         error: null,       
         loading: false
@@ -34,7 +32,7 @@ const authFail = (state, action) => {
 };
 
 const authLogout = (state, action) => {
-    return updateObject(state, { token: null, isAuthenticate:false, loading: false ,role:null });    
+    return updateObject(state, { token: null, isAuthenticate:false, loading: false });    
 };
 
 const setAuthRedirectPath = (state, action) => {

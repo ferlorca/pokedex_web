@@ -1,6 +1,7 @@
 import config from "../../config/config";
 import * as actionTypes from '../action_types';
-import {handleError} from "./common_action";
+import { handleError } from "./common_action";
+import { getPokedex, getUser } from "./pokedex_action";
 
 const axios = config.AXIOS;
 
@@ -11,57 +12,59 @@ export const authStart = () => {
     };
 };
 
-export async function authSuccess(data){       
-        return (dispatch,getState)=> {  
-            try { 
-                let authstate =  getState().auth;
-                dispatch({
-                    type: actionTypes.AUTH_SUCCESS,
-                    payload: {
-                        token: data.token ,
-                        role: data.role ?? authstate.role,
-                        email: data.email ?? authstate.email             
-                    }
-                });
-            } catch (err) {
-                handleError(err,actionTypes.AUTH_FAIL)
-            }  
-        }        
-   
+export async function authSuccess(data) {
+    return (dispatch) => {
+        try {
+            dispatch({
+                type: actionTypes.AUTH_SUCCESS,
+                payload: {
+                    token: data.token
+                }
+            });
+
+            dispatch(getUser());
+            dispatch(getPokedex());
+
+            
+        } catch (err) {
+            handleError(err, actionTypes.AUTH_FAIL)
+        }
+    }
+
 };
 
-export const logout =  () => {
+export const logout = () => {
     return dispatch => {
-        try{
-            localStorage.removeItem('token');    
+        try {
+            localStorage.removeItem('token');
             localStorage.removeItem('expirationDate');
             dispatch({
                 type: actionTypes.AUTH_LOGOUT
-            });            
+            });
         }
-        catch(err) {
-            dispatch(handleError(err,actionTypes.AUTH_FAIL));
-        };   
+        catch (err) {
+            dispatch(handleError(err, actionTypes.AUTH_FAIL));
+        };
     }
 };
 
 export const auth = (email, password, isSignup) => {
     return dispatch => {
         dispatch(authStart());
-        let route ="signin";
+        let route = "signin";
         if (isSignup) {
-            route= "signup"
+            route = "signup"
         }
-        axios.post(`/${route}`,{email,password})
-        .then((response) => {       
-            const expirationDate = new Date(new Date().getTime() + response.data.expiresIn * 1000);
-            localStorage.setItem('token', response.data.token);
-            localStorage.setItem('expirationDate', expirationDate);
-            dispatch(authSuccess(response.data));
-            dispatch(checkAuthTimeout(response.data.expiresIn));               
-        }).catch((err) => {
-            dispatch(handleError(err,actionTypes.AUTH_FAIL));
-        })
+        axios.post(`/${route}`, { email, password })
+            .then((response) => {
+                const expirationDate = new Date(new Date().getTime() + response.data.expiresIn * 1000);
+                localStorage.setItem('token', response.data.token);
+                localStorage.setItem('expirationDate', expirationDate);
+                dispatch(authSuccess(response.data));
+                dispatch(checkAuthTimeout(response.data.expiresIn));
+            }).catch((err) => {
+                dispatch(handleError(err, actionTypes.AUTH_FAIL));
+            })
     };
 };
 
@@ -94,9 +97,9 @@ export const authCheckState = () => {
             if (expirationDate <= new Date()) {
                 dispatch(logout());
             } else {
-                dispatch(authSuccess({token}));
-                dispatch(checkAuthTimeout((expirationDate.getTime() - new Date().getTime()) / 1000 ));
-            }   
+                dispatch(authSuccess({ token }));
+                dispatch(checkAuthTimeout((expirationDate.getTime() - new Date().getTime()) / 1000));
+            }
         }
     };
 };

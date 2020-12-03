@@ -4,8 +4,6 @@ import { updateObject } from '../utility';
 export const initialState = {   
     types: [],
     pokemons: [],
-    myPokedex: [],
-    max:5,
     error:null,
     loading:false,
     baseLoading:[],
@@ -13,8 +11,11 @@ export const initialState = {
     pokemonTranslation : "english",
     totalpages:null,
     filter:{
-        page:0,
-        type:[]
+        page:1,
+        type:[],
+        name:{
+            language:"english"
+        }
     }       
 };
 
@@ -34,6 +35,21 @@ const getAll = (state, action) => {
         pokemons: action.payload.pokemons,
         filter : action.payload.filter ?? state.filter,
         baseLoading,
+        totalpages: action.payload.totalpages,
+        loading:false
+    });
+};
+
+
+const nextPagePokemons = (state, action) => {
+    let auxBaseLoading= [];
+    for (const iterator of action.payload.pokemons) {
+        auxBaseLoading.push({id: iterator.id, loading: false})
+    }
+    return updateObject(state, { 
+        pokemons:state.pokemons.concat(action.payload.pokemons),
+        filter : action.payload.filter ?? state.filter,
+        baseLoading: state.baseLoading.concat(auxBaseLoading),
         totalpages: action.payload.totalpages,
         loading:false
     });
@@ -73,13 +89,6 @@ const loading = (state, action) => {
      });
 };
 
-const changeFilter = (state, action) => {
-    return updateObject(state, { 
-        filter: action.payload       
-     });
-};
-
-
 const handleError = (state, action) => {
     return updateObject( state, {
         error: action.payload.error,
@@ -102,8 +111,8 @@ const reducer = ( state = {...initialState}, action ) => {
         case actionTypes.POKEMON_GET_BASE:return getbase(state, action);
         case actionTypes.POKEMON_START: return loading(state, action);
         case actionTypes.POKEMON_FAIL: return handleError(state, action);
-        case actionTypes.POKEMON_FILTER: return changeFilter(state, action);
         case actionTypes.POKEMON_GET_ALL: return getAll(state, action);
+        case actionTypes.POKEMON_NEXT_PAGE: return nextPagePokemons(state, action);
         case actionTypes.POKEMON_CHANGE_TRANSLATIONS: return changeTranslation(state, action);        
 
         default:

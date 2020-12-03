@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { fade, makeStyles } from '@material-ui/core/styles';
+import {  makeStyles } from '@material-ui/core/styles';
 import useRouter from "../../hook/useRouter";
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -37,11 +37,7 @@ const useStyles = makeStyles(theme => {
 		},
 		search: {
 			position: 'relative',
-			borderRadius: theme.shape.borderRadius,
-			backgroundColor: fade(theme.palette.common.white, 0.15),
-			'&:hover': {
-			  backgroundColor: fade(theme.palette.common.white, 0.25),
-			},		
+			borderRadius: theme.shape.borderRadius,		
 			marginRight: theme.spacing(2),
 			marginLeft: 20,
 			width: 'auto',
@@ -75,7 +71,7 @@ function Header() {
 			element: typesElements.AUTOCOMPLETE,
 			value: null,
 			config: {
-				id: "translation", name: "translation",
+				 name: "translation",
 			},
 			childElements: languages.length > 0 ?  languages :[],
 			valid: true,
@@ -150,12 +146,10 @@ function Header() {
 				<div className={classes.searchIcon}>
 					<TranslateIcon />
 				</div>
-				<div className={classes.search}>
-					
+				<div className={classes.search}>					
 					<FormField formdata={formData.translation}
                     	change={(element) => updateForm(element)} 						
-					/>	
-	
+					/>		
 				</div>
 				
 

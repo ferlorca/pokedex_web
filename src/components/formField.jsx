@@ -105,7 +105,7 @@ function FormField({ formdata, change, inputStyle ,className=null}) {
                 <TextField
                   style={{paddingLeft:"20px",color:"white"}}
                   {...params}
-                  variant="standard"                
+                  variant="outlined"                
                 />
               )}
             />
@@ -126,7 +126,7 @@ function FormField({ formdata, change, inputStyle ,className=null}) {
                 renderInput={(params) => (
                   <TextField
                     {...params}
-                    variant="standard"                 
+                    variant="outlined"                 
                     placeholder={formdata.label}
                   />
                 )}

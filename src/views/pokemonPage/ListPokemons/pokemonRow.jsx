@@ -28,9 +28,9 @@ const useRowStyles = makeStyles({
 
 const Row = (props) => {
   const { row } = props;
-  const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const classes = useRowStyles();
+  const dispatch = useDispatch();
   const trasnlations = useSelector(state => state.translation.translations)
   const pokemonTranslation = useSelector(state => state.pokemon.pokemonTranslation)
   const baseLoading = useSelector(state => state.pokemon.baseLoading)
@@ -77,7 +77,7 @@ const Row = (props) => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {baseLoading[row.id] || !row.base ? <Grid justify="center" alignItems="center">
+                  {baseLoading[row.id] || !row.base ? <Grid container justify="center" alignItems="center">
                     <Loading />
                   </Grid>
                     :
@@ -102,19 +102,9 @@ const Row = (props) => {
 
 Row.propTypes = {
   row: PropTypes.shape({
-    calories: PropTypes.number.isRequired,
-    carbs: PropTypes.number.isRequired,
-    fat: PropTypes.number.isRequired,
-    history: PropTypes.arrayOf(
-      PropTypes.shape({
-        amount: PropTypes.number.isRequired,
-        customerId: PropTypes.string.isRequired,
-        date: PropTypes.string.isRequired,
-      }),
-    ).isRequired,
-    name: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
-    protein: PropTypes.number.isRequired,
+    id: PropTypes.string.isRequired,
+    name: PropTypes.object.isRequired,
+    type: PropTypes.array.isRequired,   
   }).isRequired,
 };
 

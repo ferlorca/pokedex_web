@@ -12,13 +12,19 @@ export const initialState = {
             more:"more",
             translate:"Translate"
         },
-        myPokedex:{
-            title:"My pokemons",            
+        pokedex:{
+            title:"My pokedex",     
+            add:"Add pokemons!",           
+            remove:"Remove",         
+            needToAddPokemons:"Add some pokemons to your pokedex !",  
+            remaning: "Remaining pokemons to my pokedex",
+            errorRemaning: "Can not allowed to add more pokemons"
         },
         pokemon: {
             title:"Pokemons",
             subtitle:"Catch them all!",
             searchlabel:"Select at least 1 type",
+            searchByName:"Search by name",
             name:"Name",
             type:"Types",
             base:"Base",
@@ -28,9 +34,7 @@ export const initialState = {
             spAttack:"SP. Attack",
             spDefense:"SP. Defense",
             speed:"Speed",
-            actions:"Actions",
-            add:"Add to my pokedex",           
-            remove:"Remove from my pokedex",            
+            actions:"Actions",                  
         },
         login: {
             signup:"Sign up",
