@@ -6,7 +6,7 @@ export const initialState = {
     language: localStorage.language ?  localStorage.language : "en",
     translations:{
         header:{
-            home:"Pokemons",
+            pokemon:"Pokemons",
             myPokedex:"My Pokedex",
             logout:"Logout",
             more:"more",
@@ -15,10 +15,20 @@ export const initialState = {
         myPokedex:{
             title:"My pokemons",            
         },
-        home: {
+        pokemon: {
             title:"Pokemons",
             subtitle:"Catch them all!",
-            filter:"Filters",
+            searchlabel:"Select at least 1 type",
+            name:"Name",
+            type:"Types",
+            base:"Base",
+            attack:"Attack",
+            defense:"Defense",
+            hp:"HP",
+            spAttack:"SP. Attack",
+            spDefense:"SP. Defense",
+            speed:"Speed",
+            actions:"Actions",
             add:"Add to my pokedex",           
             remove:"Remove from my pokedex",            
         },

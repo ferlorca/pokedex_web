@@ -8,7 +8,7 @@ function Loading() {
     justify="center"
     alignItems="center">
       <Grid item>
-        <CircularProgress color="secondary" size={100} /*className={classes.progress}*/ />
+        <CircularProgress color="secondary" size={100}/>
       </Grid>
     </Grid>
 

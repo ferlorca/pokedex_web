@@ -113,6 +113,28 @@ function FormField({ formdata, change, inputStyle ,className=null}) {
           </FormControl>
         )
         break;
+        case (typesElements.AUTOCOMPLETE_MULTIPLE):
+          formTemplate = (
+            <FormControl margin="normal" component="fieldset" fullWidth error={!formdata.valid && formdata.touched}>
+              <Autocomplete
+                multiple
+                {...formdata.config}                
+                options={formdata.childElements}
+                getOptionLabel={(option) => option.name}
+                value={formdata.value}
+                onChange={(event, value) => change({ value, id: formdata.config.id, blur: true })}  
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    variant="standard"                 
+                    placeholder={formdata.label}
+                  />
+                )}
+              />
+              {showError()}
+            </FormControl>
+          )
+          break;
       case typesElements.CHECKBOX:
         formTemplate = (
           <FormControl component="fieldset" fullWidth error={!formdata.valid && formdata.touched}>

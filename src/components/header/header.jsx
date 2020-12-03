@@ -73,7 +73,7 @@ function Header() {
 	const formDataInit={
 		translation:{
 			element: typesElements.AUTOCOMPLETE,
-			value: { id: "en", name: "English" },
+			value: null,
 			config: {
 				id: "translation", name: "translation",
 			},
@@ -118,7 +118,7 @@ function Header() {
 	useEffect(() => {
 		if (routes) {
 			let action = routes.location.pathname.replace("/", "");
-			setValue(action);
+			setValue(action==="" ? "pokemon" : action);
 		}
 	}, [routes])
 
@@ -149,7 +149,7 @@ function Header() {
                 </Typography>
 				<div className={classes.searchIcon}>
 					<TranslateIcon />
-					</div>
+				</div>
 				<div className={classes.search}>
 					
 					<FormField formdata={formData.translation}
@@ -165,7 +165,7 @@ function Header() {
 					showLabels
 					className={classes.button}
 				>
-				<BottomNavigationAction key={actionRoutes.home} value={actionRoutes.home} label={trasnlations.header.home} icon={<RestoreIcon />} />
+				<BottomNavigationAction key={actionRoutes.pokemon} value={actionRoutes.pokemon} label={trasnlations.header.pokemon} icon={<RestoreIcon />} />
 				<BottomNavigationAction key={actionRoutes.myPokedex} value={actionRoutes.myPokedex} label={trasnlations.header.myPokedex} icon={<FavoriteIcon />} />,					
 					
 				</BottomNavigation>

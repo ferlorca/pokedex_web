@@ -1,5 +1,6 @@
 import * as types from '../action_types';
 import { googleTranslate } from "../../config/utilities";
+import {verifyTranslationPokemonName } from "./../actions/pokemon_action";
 import {initialState} from "../reducers/translation_reducer";
 
 
@@ -20,7 +21,7 @@ const verifyTranslations=()=>{
         let language = getState().translation.language;
         if(language !== "en"){
             dispatch(changeTranslations(language))
-        }
+        }       
     }
 }
 
@@ -46,7 +47,8 @@ export const changeTranslations = (language) => {
         dispatch({
             type: types.TRANSLATIONS_CHANGE_LANG,
             payload: cpyTranslations
-        });           
+        });   
+        dispatch(verifyTranslationPokemonName(language))        
     }
 };
 

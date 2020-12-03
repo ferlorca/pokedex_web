@@ -2,9 +2,9 @@ import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 
 //views
-import Home from "./views/home/home";
+import Pokemon from "./views/pokemonPage/pokemon";
 import Login from "./views/auth/login";
-import MyPokedex from "./views/pokedex/myPokedex";
+import MyPokedex from "./views/pokedexPage/myPokedex";
 import Logout from "./views/auth/logout";
 import NoFoundComponent from "./views/errorsAndWarnings/noFoundComponent";
 //hocs
@@ -15,7 +15,7 @@ import Notifications from './components/notification';
 
 
 export const actionRoutes = {
-	home: "home",
+	pokemon: "pokemon",
 	myPokedex: "myPokedex",	
 	logout: "logout",
 	login:"login",
@@ -28,9 +28,9 @@ function Routes() {
 		<React.Fragment>
 			<Initializer>
 				<Switch>
-					<Route path={"/"} exact component={()=>(<Layout><Home/></Layout>)} />
+					<Route path={"/"} exact component={()=>(<Layout><Pokemon/></Layout>)} />
 					<Route path={"/"+actionRoutes.logout} component={() => (<Logout />)} />							
-					<Route path={"/"+actionRoutes.home} exact component={() => (<Layout><Home /></Layout>)} />							
+					<Route path={"/"+actionRoutes.pokemon} exact component={() => (<Layout><Pokemon /></Layout>)} />							
 					<Route path={"/"+actionRoutes.myPokedex} exact component={()=>(<Layout><MyPokedex/></Layout>)} />					
 					<Route path={"/"+actionRoutes.login}  component={()=> (<Styles><Notifications /><Login /></Styles>)} />
 					<Route to={"/"+actionRoutes.noFoundPage} component={() => (<Styles><NoFoundComponent /></Styles>)} />					
