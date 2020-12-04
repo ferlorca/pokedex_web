@@ -14,9 +14,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableBody from '@material-ui/core/TableBody';
 import { useDispatch, useSelector } from "react-redux";
 import { getBase } from "../../../store/actions/pokemon_action";
-import Loading from "../../../components/loading";
 import Actions from "./actions";
-import { Grid } from "@material-ui/core";
 
 
 const useRowStyles = makeStyles({
@@ -60,7 +58,7 @@ const Row = (props) => {
         </TableCell>
       </TableRow>
       <TableRow>
-        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+        <TableCell colSpan={4}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box margin={1}>
               <Typography variant="h6" gutterBottom component="div">
@@ -68,7 +66,7 @@ const Row = (props) => {
               </Typography>
 
               {/* if !loading */}
-              <Table size="small" aria-label="purchases">
+              <Table size="small" aria-label="stats">
                 <TableHead>
                   <TableRow>
                     <TableCell align="right">{trasnlations.pokemon.attack}</TableCell>
@@ -81,7 +79,14 @@ const Row = (props) => {
                 </TableHead>
                 <TableBody>
                   {baseLoading[row.id] || !row.base ? 
-                      null   
+                      <TableRow>
+                      <TableCell align="right">...</TableCell>
+                      <TableCell align="right">... </TableCell>
+                      <TableCell align="right">...</TableCell>
+                      <TableCell align="right">... </TableCell>
+                      <TableCell align="right">...</TableCell>
+                      <TableCell align="right">...</TableCell>
+                    </TableRow>   
                     :
                     <TableRow>
                       <TableCell align="right">{row.base.attack}</TableCell>

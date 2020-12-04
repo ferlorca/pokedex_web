@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {  makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import useRouter from "../../hook/useRouter";
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -37,43 +37,44 @@ const useStyles = makeStyles(theme => {
 		},
 		search: {
 			position: 'relative',
-			borderRadius: theme.shape.borderRadius,		
+			borderRadius: theme.shape.borderRadius,
 			marginRight: theme.spacing(2),
 			marginLeft: 20,
 			width: 'auto',
 			[theme.breakpoints.up('sm')]: {
-			  marginLeft: theme.spacing(3),
-			  width: '15%',
+				marginLeft: theme.spacing(3),
+				width: '15%',
 			},
-		  },
-		  searchIcon: {
-			height: '100%',		
+		},
+		searchIcon: {
+			height: '100%',
 			pointerEvents: 'none',
 			display: 'flex',
 			alignItems: 'center',
 			justifyContent: 'center',
-		  },
+		},
 	}
 });
 
 
 function Header() {
-	
 
+	const [loading, setloading] = useState(false)
 	const dispatch = useDispatch();
 	const trasnlations = useSelector(state => state.translation.translations)
 	const routes = useRouter();
 	const classes = useStyles();
 	const languages = useSelector(state => state.translation.languageCodes)
-	const language = useSelector(state => state.translation.language)
-	const formDataInit={
-		translation:{
+	const formDataInit = {
+		translation: {
 			element: typesElements.AUTOCOMPLETE,
 			value: null,
+			label:trasnlations.header.translate,	
 			config: {
-				 name: "translation",
+				name: "translation",
+				disabled: loading
 			},
-			childElements: languages.length > 0 ?  languages :[],
+			childElements: languages.length > 0 ? languages : [],
 			valid: true,
 			touched: false,
 			validationMessage: ''
@@ -95,30 +96,43 @@ function Header() {
 
 
 	useEffect(() => {
+		const newFormData = {
+			...formData
+		}
+		newFormData["translation"].config.disabled = loading;
+		setFormData(newFormData);
+	}, [loading])
+
+	useEffect(() => {
 		if (languages && languages.length > 0) {
 			const newFormData = {
-			  ...formData
+				...formData
 			}
 			const newElement = {
-			  ...newFormData["translation"]
+				...newFormData["translation"]
 			}
-			newElement.childElements = languages;				
-			newElement.value = languages.filter(item=>item.id === language)[0];	
-			
+			newElement.childElements = languages;
+			//newElement.value = languages.filter(item => item.id === language)[0];
+
 			newFormData["translation"] = newElement;
 			setFormData(newFormData);
 		}
-			
+
 	}, [languages])
 
 	useEffect(() => {
 		if (routes) {
 			let action = routes.location.pathname.replace("/", "");
-			setValue(action==="" ? "pokemon" : action);
+			setValue(action === "" ? "pokemon" : action);
 		}
 	}, [routes])
 
-	const logoutHandler =()=>{
+
+	useEffect(() => {
+		setloading(false);
+	}, [trasnlations])
+
+	const logoutHandler = () => {
 		dispatch(logout());
 	}
 
@@ -128,11 +142,12 @@ function Header() {
 		routes.history.push(`/${value}`)
 	}
 
-	const updateForm =(element)=>{
-		if(element.value !== null) {
-			setFormData(updateFormData(element, formData))
+	const updateForm = (element) => {
+		if (element.value !== null) {
+			setloading(true)
+			setFormData(updateFormData(element, formData, trasnlations.login))
 			dispatch(changeTranslations(element.value.id));
-		}			
+		}
 	}
 
 
@@ -141,17 +156,17 @@ function Header() {
 		<AppBar position="fixed" className={classes.appbar}>
 			<Toolbar>
 				<Typography variant="h6" className={classes.title}>
-					PokedexApp 
+					PokedexApp
                 </Typography>
 				<div className={classes.searchIcon}>
 					<TranslateIcon />
 				</div>
-				<div className={classes.search}>					
+				<div className={classes.search}>
 					<FormField formdata={formData.translation}
-                    	change={(element) => updateForm(element)} 						
-					/>		
+						change={(element) => updateForm(element)}
+					/>
 				</div>
-				
+
 
 				<BottomNavigation
 					value={value}
@@ -159,9 +174,9 @@ function Header() {
 					showLabels
 					className={classes.button}
 				>
-				<BottomNavigationAction key={actionRoutes.pokemon} value={actionRoutes.pokemon} label={trasnlations.header.pokemon} icon={<RestoreIcon />} />
-				<BottomNavigationAction key={actionRoutes.myPokedex} value={actionRoutes.myPokedex} label={trasnlations.header.myPokedex} icon={<FavoriteIcon />} />,					
-					
+					<BottomNavigationAction key={actionRoutes.pokemon} value={actionRoutes.pokemon} label={trasnlations.header.pokemon} icon={<RestoreIcon />} />
+					<BottomNavigationAction key={actionRoutes.myPokedex} value={actionRoutes.myPokedex} label={trasnlations.header.myPokedex} icon={<FavoriteIcon />} />,
+
 				</BottomNavigation>
 				<IconButton
 					aria-label={trasnlations.header.more}

@@ -1,16 +1,15 @@
 import React from 'react';
-
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormHelperText from "@material-ui/core/FormHelperText";
-import InputBase from '@material-ui/core/InputBase';
 import Switch from '@material-ui/core/Switch';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from "@material-ui/core/TextField";
 import RenderAutocomplete from './renderAutocomplete';
+import { CircularProgress } from '@material-ui/core';
 
 export const typesElements = {
   INPUT: "INPUT",
@@ -70,9 +69,18 @@ function FormField({ formdata, change, inputStyle ,className=null}) {
               renderOption={(option) => (<RenderAutocomplete {...option} />)}
               renderInput={(params) => (
                 <TextField
-                  style={{paddingLeft:"20px",color:"white"}}
                   {...params}
-                  variant="outlined"                
+                  label={formdata.label}
+                  variant="outlined"
+                  InputProps={{
+                    ...params.InputProps,
+                    endAdornment: (
+                      <React.Fragment>
+                        {formdata.config.disabled ? <CircularProgress color="inherit" size={20} /> : null}
+                        {params.InputProps.endAdornment}
+                      </React.Fragment>
+                    ),
+                  }}
                 />
               )}
             />

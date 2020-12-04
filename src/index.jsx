@@ -5,7 +5,8 @@ import { Provider } from "react-redux";
 import promiseMiddleware from "redux-promise";
 import BrowserRoutes from "./browserRouter";
 import ReduxThunk from "redux-thunk";
-import reportWebVitals from './reportWebVitals';
+import * as serviceWorker from './serviceWorker';
+
 //reducers
 import reducers from "./store/reducers/index";
 
@@ -26,7 +27,6 @@ const App = () => {
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+
+
+serviceWorker.unregister();

@@ -85,10 +85,10 @@ function Actions({ row ,loadingRow}) {
                 }
 
             </Grid>
-
-            {loadingRow ? <Grid item>
+{/* 
+            {loadingRow ? <Grid item p={2} m={2}>
                 <CircularProgress color="inherit" size={20} />
-            </Grid> :null}
+            </Grid> :null} */}
         </Grid>
     )
 }

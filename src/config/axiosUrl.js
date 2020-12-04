@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const baseURL = (process.env.NODE_ENV === 'production') ?
-  "https://us-central1-pokedex-13a67.cloudfunctions.net/api"
+  "https://us-central1-pokedex-79f41.cloudfunctions.net/api"
   :
   "http://localhost:3001"
   ;
@@ -21,6 +21,7 @@ const AxiosInstance = (function () {
             config.headers['Authorization'] = 'Bearer ' + token;
           }
           config.headers['Content-Type'] = 'application/json';
+          config.headers["Access-Control-Allow-Origin"]= "*";
           return config;
         },
         error => {
