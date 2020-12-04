@@ -40,14 +40,19 @@ export const initialState = {
             signup:"Sign up",
             signin:"Log in",
             email:"Email",
-            password:"Password"
+            password:"Password",
+            repassword:"Repeat password",
+            signupswitch:"be pokedex user!",
+            validationEmail:"It must be a valid email",
+            validationMoreThanFive:"It need to have more than 5 characters",
+            validationMustBeEqualTo:"It must be equal to ",
+            validationRequired:"Required",
         },
         utils:{
-            accept:"Accept",
-            cancel:"Cancel",
-            close:"Close",
-            add:"Add",
-            remove:"Remove",
+            add:"Add to pokedex",
+            added:"Added!",
+            remove:"Remove from pokedex",
+            removed:"Removed!",
         }    
     },   
 };

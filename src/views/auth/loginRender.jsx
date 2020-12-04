@@ -63,6 +63,7 @@ function LoginRender({formData,loading,submitForm,updateForm,error}) {
 	const classes = useStyles();
 	const translation = useSelector(state => state.translation.translations)
 
+
 	const showError = () => {
 		if (error){
 			return <div>{error.message} </div>
@@ -86,6 +87,15 @@ function LoginRender({formData,loading,submitForm,updateForm,error}) {
 
 					<FormField formdata={formData.password}
 						change={(element) => updateForm(element)} />
+					
+					{formData.isSignUp.value ? 
+						<FormField formdata={formData.repassword}
+						change={(element) => updateForm(element)} />
+					:
+						null
+					}
+					<FormField formdata={formData.isSignUp}
+						change={(element) => updateForm(element)} />
 
 					{loading === true ?  <CircularProgress className={classes.loading}/> : null}
 
@@ -97,22 +107,15 @@ function LoginRender({formData,loading,submitForm,updateForm,error}) {
 								fullWidth
 								variant="contained"
 								color="primary"
-								onClick={(event) => submitForm(event, false)}
+								onClick={(event) => submitForm(event)}
 							>
-								{translation.login.signin}
+								{formData.isSignUp.value ? 
+									translation.login.signup
+								:
+									translation.login.signin
+								}
 							</Button>
-						</Grid>
-						<Grid item xs={6} >
-							<Button
-								type="submit"
-								fullWidth
-								variant="contained"
-								color="primary"
-								onClick={(event) => submitForm(event, true)}
-							>
-								{translation.login.signup}
-							</Button>
-						</Grid>
+						</Grid>						
 					</Grid>
 				</form>			
 

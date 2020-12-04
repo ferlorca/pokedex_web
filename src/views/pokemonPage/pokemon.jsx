@@ -133,8 +133,8 @@ function Pokemon() {
                             justify="flex-end"
                             alignItems="center"
                             >                        
-                            <Button variant="contained" color="primary" onClick={handleNext}>
-                                More Pokemons 
+                            <Button variant="contained" color="primary" disabled={true} onClick={handleNext}>
+                                More Pokemons (momentanealy disabled)
                             </Button>
                         </Grid>                       
                     </Grid>    

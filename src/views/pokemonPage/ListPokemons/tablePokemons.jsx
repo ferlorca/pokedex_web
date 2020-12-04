@@ -16,7 +16,7 @@ export default function PokemonList() {
   const pokemons = useSelector(state => state.pokemon.pokemons)
   const loading = useSelector(state => state.pokemon.loading)
   return (
-    <TableContainer component={Paper}>
+    <TableContainer component={Paper} style={{width:"100%", overflow:"none"}}>
       <Table aria-label="collapsible table">
         <TableHead>
           <TableRow>
@@ -36,8 +36,11 @@ export default function PokemonList() {
               direction="row"
               justify="center"
               alignItems="center"
-              >                       
-                  <Loading/>   
+              >      
+              <Grid item xs={12}>
+                <Loading/>   
+              </Grid>
+                 
               </Grid>        
             : null}
         </TableBody>

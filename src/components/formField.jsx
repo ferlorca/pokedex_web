@@ -41,8 +41,9 @@ function FormField({ formdata, change, inputStyle ,className=null}) {
           <FormControl margin="normal" component="fieldset" fullWidth error={!formdata.valid && formdata.touched}>
             <TextField
               label={formdata.label}
+              variant="outlined" 
               autoFocus={false}
-              id={formdata.config.id}
+              {...formdata.config}
               inputProps={{
                 readOnly: formdata.config.disabled,
               }}
@@ -50,40 +51,6 @@ function FormField({ formdata, change, inputStyle ,className=null}) {
               value={formdata.value}              
               onBlur={(event) => change({ event, id: formdata.config.id, blur: true })}
               onChange={(event) => change({ event, id: formdata.config.id, blur: false })}
-            />
-            {showError()}
-          </FormControl>
-        )
-        break; 
-      case (typesElements.INPUT_NAKED):
-        formTemplate = (
-          <FormControl required component="fieldset" fullWidth error={!formdata.valid && formdata.touched}>
-            <InputBase
-              value={formdata.value}
-              // eslint-disable-next-line no-sequences
-              inputProps={{ "aria-label": "naked" , "style": inputStyle , readOnly: formdata.config.disabled}}
-              {...formdata.config}
-              onBlur={(event) => change({ event, id: formdata.config.id, blur: true })}
-              onChange={(event) => change({ event, id: formdata.config.id, blur: false })}
-            />
-            {showError()}
-          </FormControl>
-        )
-        break;
-      case (typesElements.TEXT_AREA):
-        formTemplate = (
-          <FormControl margin="normal" component="fieldset" fullWidth error={!formdata.valid && formdata.touched}>
-            <TextField
-              label={formdata.label}
-              autoFocus={false}
-              {...formdata.config}
-              multiline
-              inputProps={{
-                readOnly: formdata.config.disabled,
-              }}
-              value={formdata.value}
-              onBlur={(event) => change({ event, id: formdata.config.id, blur: true })}
-              onChange={(event) => change({ event, id: formdata.config.id, blur: false })}              
             />
             {showError()}
           </FormControl>

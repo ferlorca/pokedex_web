@@ -15,6 +15,7 @@ import TableBody from '@material-ui/core/TableBody';
 import { useDispatch, useSelector } from "react-redux";
 import { getBase } from "../../../store/actions/pokemon_action";
 import Loading from "../../../components/loading";
+import Actions from "./actions";
 import { Grid } from "@material-ui/core";
 
 
@@ -54,7 +55,9 @@ const Row = (props) => {
           {row.name[pokemonTranslation]}
         </TableCell>
         <TableCell>{row.type.map(item => (item + ","))}</TableCell>
-        <TableCell align="right">boton</TableCell>
+        <TableCell align="right">
+            <Actions row={row} loadingRow={baseLoading[row.id]}/>
+        </TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -77,9 +80,8 @@ const Row = (props) => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {baseLoading[row.id] || !row.base ? <Grid container justify="center" alignItems="center">
-                    <Loading />
-                  </Grid>
+                  {baseLoading[row.id] || !row.base ? 
+                      null   
                     :
                     <TableRow>
                       <TableCell align="right">{row.base.attack}</TableCell>

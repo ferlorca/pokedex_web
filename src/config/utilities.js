@@ -3,6 +3,12 @@ import { typesElements } from "./../components/formField";
 const apiKey = process.env.REACT_APP_GOOGLE_TRANSLATE_API_KEY;
 export const googleTranslate = require("google-translate")(apiKey);
 
+export const VALIDATIONMESSAGE={
+  validationEmail:"validationEmail",
+  validationMoreThanFive:"validationMoreThanFive",
+  validationMustBeEqualTo:"validationMustBeEqualTo",
+  validationRequired:"validationRequired",
+}
 
 const validate = (element, formData) => {
   let err = [true, ''];
@@ -10,20 +16,20 @@ const validate = (element, formData) => {
 
   if (valid && element.validation && element.validation.email) {
     valid = /\w+@\S+\.\S+/.test(element.value);
-    let message = `${!valid ? 'Tiene que ser un email valido' : ''}`;
+    let message = `${!valid ? VALIDATIONMESSAGE.validationEmail : ''}`;
     err = !valid ? [valid, message] : err
   }
 
   if (valid && element.validation && element.validation.password) {
     valid = element.value.length >= 6;
-    let message = `${!valid ? 'Tiene que tener mas de 5 caracteres' : ''}`;
+    let message = `${!valid ? VALIDATIONMESSAGE.validationMoreThanFive : ''}`;
     err = !valid ? [valid, message] : err
   }
 
   if (valid && element.validation && element.validation.isEqualTo) {
     let otherElement = formData[element.validation.isEqualTo];
     valid = element.value === otherElement.value
-    let message = `${!valid ? `Este campo debe ser igual a ${otherElement.label}` : ''}`;
+    let message = `${!valid ? VALIDATIONMESSAGE.validationMustBeEqualTo  : ''}`;
     err = !valid ? [valid, message] : err
   }
 
@@ -33,14 +39,23 @@ const validate = (element, formData) => {
     } else {
       valid = (element.value !== null && element.value.toString().trim() !== '');
     }
-    let message = `${!valid ? 'Este campo es requerido' : ''}`;
+    let message = `${!valid ? VALIDATIONMESSAGE.validationRequired : ''}`;
     err = !valid ? [valid, message] : err
   }
 
   return err;
 }
 
-export const updateFormData = (element, formData) => {
+
+export const updateFormData = (element, formData,translations) => {
+  const getValidationMessage=(msj,element)=>{
+    let message = translations[msj];
+    if(VALIDATIONMESSAGE.validationMustBeEqualTo === msj ){
+      message =  message +" "+ formData[element.validation.isEqualTo].label
+    }
+		return message;
+	}
+
   const newFormData = {
     ...formData
   }  
@@ -53,7 +68,7 @@ export const updateFormData = (element, formData) => {
   if (element.blur) {
     let validData = validate(newElement, formData);
     newElement.valid = validData[0];
-    newElement.validationMessage = validData[1];
+    newElement.validationMessage = getValidationMessage(validData[1],newElement);
   }
   newElement.touched = element.blur ?? false;
   newFormData[element.id] = newElement;
