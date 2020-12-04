@@ -1,3 +1,15 @@
+## Fernando Lorca aclarations: 
+
+To run this project locally, before than all you create .env file in the root path with the variable: 
+
+REACT_APP_GOOGLE_TRANSLATE_API_KEY= [APIGOOGLEKKEY]
+
+I vote to use this way beacause is very unsafe expose this key in fithub with a public account.
+
+Also I didn't make any test in the app, because the time deadlines. But I always use Jest and Enzyme to make unitary test. 
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
