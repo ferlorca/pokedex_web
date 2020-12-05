@@ -52,7 +52,7 @@ function Actions({ row ,loadingRow}) {
                     <Box display="flex" flexDirection="row" p={1} m={1}>
                         <Box p={1} >
                             <Typography variant="h5">
-                                {row.name[pokemonTranslation] + " " + (isInPokedex ? translations.utils.removed :translations.utils.added)}
+                                {row.name[pokemonTranslation] + " " + (!isInPokedex ? translations.utils.removed :translations.utils.added)}
                             </Typography>
                         </Box>
                         <Box p={1} >
