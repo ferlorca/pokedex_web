@@ -8,7 +8,7 @@ export const initialState = {
     error:null,
     loading:false,
     loadingPokemons:false,
-    remainingPokemon:0,
+    remainingPokemon:5,
     filter:{
         page:0,
         amountPerPage:-1,
